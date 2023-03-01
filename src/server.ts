@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express'
 import dataBase from './config/dbConnect'
+import routes from './routes'
 
 dataBase.on('error', console.log.bind(console, 'connection error'))
 dataBase.once('open', () => {
@@ -7,11 +8,6 @@ dataBase.once('open', () => {
 })
 
 const app = express()
-
 app.use(express.json())
-
-app.get('/', (req: Request, res: Response) => {
-  return res.status(200).send('Hello')
-})
-
+routes(app)
 app.listen(3000, () => console.log('listening...'))
