@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
 import dataBase from './config/dbConnect'
 import routes from './routes'
 
@@ -10,4 +10,4 @@ dataBase.once('open', () => {
 const app = express()
 app.use(express.json())
 routes(app)
-app.listen(3000, () => console.log('listening...'))
+app.listen(8000, () => console.log('listening...'))
