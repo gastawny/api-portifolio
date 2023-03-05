@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import User from '../models/User'
+import bcrypt from 'bcrypt'
 
 class UserController {
   static async getUsers(request: Request, response: Response) {
@@ -18,13 +19,18 @@ class UserController {
 
   static async createUser(request: Request, response: Response) {
     try {
-      const newUser = new User(request.body)
+      const { username, password } = request.body
 
-      const authNewTechnology = await User.findOne({ username: newUser.username })
+      const authNewTechnology = await User.findOne({ username })
       if (authNewTechnology) throw new Error('user already exists')
 
       const pattern = /[^a-zA-Z0-9\s]/gm
-      if (pattern.test(newUser.username)) throw new Error('unsupported characters')
+      if (pattern.test(username)) throw new Error('unsupported characters')
+
+      const salt = await bcrypt.genSalt(16)
+      const passwordHash = await bcrypt.hash(password, salt)
+
+      const newUser = new User({ username, password: passwordHash })
 
       await newUser.save()
       response.status(200).send('registered user')

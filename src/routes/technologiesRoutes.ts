@@ -1,12 +1,21 @@
-import express from 'express'
+import { Router } from 'express'
+import authentication from '../authentication/authentication'
 import TechnologyController from '../controllers/TechnologyController'
 
-const technologiesRoutes = express.Router()
+const technologiesRoutes = Router()
 
 technologiesRoutes
   .get('/technologies', TechnologyController.getTechnologies)
-  .post('/technologies', TechnologyController.createTechnology)
-  .put('/technologies/:technology', TechnologyController.updateTechnologyValue)
-  .delete('/technologies/:technology', TechnologyController.deleteTechnology)
+  .post('/technologies', authentication.checkToken, TechnologyController.createTechnology)
+  .put(
+    '/technologies/:technology',
+    authentication.checkToken,
+    TechnologyController.updateTechnologyValue
+  )
+  .delete(
+    '/technologies/:technology',
+    authentication.checkToken,
+    TechnologyController.deleteTechnology
+  )
 
 export default technologiesRoutes
