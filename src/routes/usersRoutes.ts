@@ -1,7 +1,11 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import UserController from '../controllers/UserController'
 
 const usersRoutes = express.Router()
 
-usersRoutes.get('/users', (req: Request, res: Response) => res.status(200).send('usersRoutes'))
+usersRoutes
+  .get('/users', UserController.getUsers)
+  .post('/users', UserController.createUser)
+  .delete('/users', UserController.deleteUser)
 
 export default usersRoutes
