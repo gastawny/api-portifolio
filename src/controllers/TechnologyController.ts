@@ -6,7 +6,13 @@ class TechnologyController {
     try {
       const technologies = await Technology.find()
 
-      response.status(200).send(technologies)
+      const filteredTechnologies = technologies.map((tech) => ({
+        technology: tech.technology,
+        value: tech.value,
+        imgName: tech.imgName,
+      }))
+
+      response.status(200).send(filteredTechnologies)
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }
@@ -22,7 +28,7 @@ class TechnologyController {
       const pattern = /[^a-zA-Z0-9\s]/gm
       if (pattern.test(newTechnology.technology)) throw new Error('unsupported characters')
 
-      newTechnology.save()
+      await newTechnology.save()
       response.status(200).send(newTechnology)
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
@@ -33,9 +39,8 @@ class TechnologyController {
     try {
       const { technology } = request.params
       const { value } = request.body
-
-      Technology.findOneAndUpdate({ technology }, { $set: { value } })
-      response.status(200).send(request.body)
+      await Technology.findOneAndUpdate({ technology }, { $set: { value } })
+      response.status(200).send(` new ${technology} value: ${value}`)
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }
@@ -44,9 +49,8 @@ class TechnologyController {
   static async deleteTechnology(request: Request, response: Response) {
     try {
       const { technology } = request.params
-
-      Technology.findOneAndDelete({ technology })
-      response.status(200).send(request.body)
+      await Technology.findOneAndDelete({ technology })
+      response.status(200).send(`${technology} deleted`)
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }
