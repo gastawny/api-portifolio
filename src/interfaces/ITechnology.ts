@@ -1,5 +1,7 @@
 export default interface ITechnology {
   technology: string
   value: number
-  imgName: string
+  iconName: string
+  iconSize: number
+  fontSize: number
 }

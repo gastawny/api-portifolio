@@ -21,7 +21,9 @@ class TechnologyController {
                 const filteredTechnologies = technologies.map((tech) => ({
                     technology: tech.technology,
                     value: tech.value,
-                    imgName: tech.imgName,
+                    iconName: tech.iconName,
+                    fontSize: tech.fontSize,
+                    iconSize: tech.iconSize,
                 }));
                 response.status(200).send(filteredTechnologies);
             }
