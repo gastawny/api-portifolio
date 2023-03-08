@@ -12,4 +12,5 @@ dbConnect_1.default.once('open', () => {
 });
 const app = (0, express_1.default)();
 (0, routes_1.default)(app);
-app.listen(8000, () => console.log('listening...'));
+const port = 8000;
+app.listen(port, () => console.log('http://localhost:8000'));

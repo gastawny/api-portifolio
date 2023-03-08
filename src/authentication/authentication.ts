@@ -16,12 +16,12 @@ class authentication {
     }
   }
 
-  static async Login(request: Request, response: Response) {
+  static async login(request: Request, response: Response) {
     try {
       const { username, password } = request.body
       if (!username) throw new Error('username invalid')
-
       const user = await User.findOne({ username })
+      if (!user) throw new Error('User not found')
 
       const checkPassword = await bcrypt.compare(password, user!.password)
       if (!checkPassword) throw new Error('invalid data')
@@ -34,7 +34,7 @@ class authentication {
     }
   }
 
-  static async Register(request: Request, response: Response) {
+  static async register(request: Request, response: Response) {
     try {
       const { username, password } = request.body
 

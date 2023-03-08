@@ -39,7 +39,7 @@ class UserController {
                 const pattern = /[^a-zA-Z0-9\s]/gm;
                 if (pattern.test(username))
                     throw new Error('unsupported characters');
-                const salt = yield bcrypt_1.default.genSalt(16);
+                const salt = yield bcrypt_1.default.genSalt(12);
                 const passwordHash = yield bcrypt_1.default.hash(password, salt);
                 const newUser = new User_1.default({ username, password: passwordHash });
                 yield newUser.save();
@@ -54,7 +54,12 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { username, password } = request.body;
-                const deletedUser = yield User_1.default.findOneAndDelete({ username, password });
+                const user = yield User_1.default.findOne({ username });
+                const checkPassword = yield bcrypt_1.default.compare(password, user.password);
+                console.log(checkPassword, user.password, password);
+                if (!checkPassword)
+                    throw new Error('username or password invalid');
+                const deletedUser = yield User_1.default.findOneAndDelete({ username });
                 if (!deletedUser)
                     throw new Error('username or password invalid');
                 response.status(200).send(`${username} deleted`);

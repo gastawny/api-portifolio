@@ -9,4 +9,7 @@ dataBase.once('open', () => {
 
 const app = express()
 routes(app)
-app.listen(8000, () => console.log('listening...'))
+
+const port = 8000
+
+app.listen(port, () => console.log('http://localhost:8000'))

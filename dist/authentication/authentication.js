@@ -30,13 +30,15 @@ class authentication {
             }
         });
     }
-    static Login(request, response) {
+    static login(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { username, password } = request.body;
                 if (!username)
                     throw new Error('username invalid');
                 const user = yield User_1.default.findOne({ username });
+                if (!user)
+                    throw new Error('User not found');
                 const checkPassword = yield bcrypt_1.default.compare(password, user.password);
                 if (!checkPassword)
                     throw new Error('invalid data');
@@ -48,7 +50,7 @@ class authentication {
             }
         });
     }
-    static Register(request, response) {
+    static register(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { username, password } = request.body;

@@ -27,7 +27,7 @@ class UserController {
       const pattern = /[^a-zA-Z0-9\s]/gm
       if (pattern.test(username)) throw new Error('unsupported characters')
 
-      const salt = await bcrypt.genSalt(16)
+      const salt = await bcrypt.genSalt(12)
       const passwordHash = await bcrypt.hash(password, salt)
 
       const newUser = new User({ username, password: passwordHash })
@@ -43,7 +43,12 @@ class UserController {
     try {
       const { username, password } = request.body
 
-      const deletedUser = await User.findOneAndDelete({ username, password })
+      const user = await User.findOne({ username })
+      const checkPassword = await bcrypt.compare(password, user!.password)
+      console.log(checkPassword, user!.password, password)
+      if (!checkPassword) throw new Error('username or password invalid')
+
+      const deletedUser = await User.findOneAndDelete({ username })
 
       if (!deletedUser) throw new Error('username or password invalid')
       response.status(200).send(`${username} deleted`)
