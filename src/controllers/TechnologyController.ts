@@ -31,7 +31,7 @@ class TechnologyController {
       if (pattern.test(newTechnology.technology)) throw new Error('unsupported characters')
 
       await newTechnology.save()
-      response.status(200).send(newTechnology)
+      response.status(200).send({ message: 'technology created' })
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }
@@ -42,7 +42,7 @@ class TechnologyController {
       const { technology } = request.params
       const { value } = request.body
       await Technology.findOneAndUpdate({ technology }, { $set: { value } })
-      response.status(200).send(` new ${technology} value: ${value}`)
+      response.status(200).send({ message: 'Update value' })
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }
@@ -52,7 +52,7 @@ class TechnologyController {
     try {
       const { technology } = request.params
       await Technology.findOneAndDelete({ technology })
-      response.status(200).send(`${technology} deleted`)
+      response.status(200).send({ message: `${technology} deleted` })
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }

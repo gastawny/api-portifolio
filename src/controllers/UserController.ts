@@ -33,7 +33,7 @@ class UserController {
       const newUser = new User({ username, password: passwordHash })
 
       await newUser.save()
-      response.status(200).send('registered user')
+      response.status(200).send({ message: 'registered user' })
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }
@@ -51,7 +51,7 @@ class UserController {
       const deletedUser = await User.findOneAndDelete({ username })
 
       if (!deletedUser) throw new Error('username or password invalid')
-      response.status(200).send(`${username} deleted`)
+      response.status(200).send({ message: `${username} deleted` })
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
     }
