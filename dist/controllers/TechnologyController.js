@@ -43,7 +43,7 @@ class TechnologyController {
                 if (pattern.test(newTechnology.technology))
                     throw new Error('unsupported characters');
                 yield newTechnology.save();
-                response.status(200).send(newTechnology);
+                response.status(200).send({ message: 'technology created' });
             }
             catch (error) {
                 response.status(500).send({ error: 'Error', message: error.message });
@@ -54,9 +54,9 @@ class TechnologyController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { technology } = request.params;
-                const { value } = request.body;
-                yield Technology_1.default.findOneAndUpdate({ technology }, { $set: { value } });
-                response.status(200).send(` new ${technology} value: ${value}`);
+                const { value, iconName, iconSize, fontSize } = request.body;
+                yield Technology_1.default.findOneAndUpdate({ technology }, { $set: { value, iconName, iconSize, fontSize } });
+                response.status(200).send({ message: 'Update value' });
             }
             catch (error) {
                 response.status(500).send({ error: 'Error', message: error.message });
@@ -68,7 +68,7 @@ class TechnologyController {
             try {
                 const { technology } = request.params;
                 yield Technology_1.default.findOneAndDelete({ technology });
-                response.status(200).send(`${technology} deleted`);
+                response.status(200).send({ message: `${technology} deleted` });
             }
             catch (error) {
                 response.status(500).send({ error: 'Error', message: error.message });

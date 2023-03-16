@@ -43,7 +43,7 @@ class UserController {
                 const passwordHash = yield bcrypt_1.default.hash(password, salt);
                 const newUser = new User_1.default({ username, password: passwordHash });
                 yield newUser.save();
-                response.status(200).send('registered user');
+                response.status(200).send({ message: 'registered user' });
             }
             catch (error) {
                 response.status(500).send({ error: 'Error', message: error.message });
@@ -62,7 +62,7 @@ class UserController {
                 const deletedUser = yield User_1.default.findOneAndDelete({ username });
                 if (!deletedUser)
                     throw new Error('username or password invalid');
-                response.status(200).send(`${username} deleted`);
+                response.status(200).send({ message: `${username} deleted` });
             }
             catch (error) {
                 response.status(500).send({ error: 'Error', message: error.message });

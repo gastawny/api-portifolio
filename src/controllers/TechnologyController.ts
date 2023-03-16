@@ -40,8 +40,11 @@ class TechnologyController {
   static async updateTechnologyValue(request: Request, response: Response) {
     try {
       const { technology } = request.params
-      const { value } = request.body
-      await Technology.findOneAndUpdate({ technology }, { $set: { value } })
+      const { value, iconName, iconSize, fontSize } = request.body
+      await Technology.findOneAndUpdate(
+        { technology },
+        { $set: { value, iconName, iconSize, fontSize } }
+      )
       response.status(200).send({ message: 'Update value' })
     } catch (error: any) {
       response.status(500).send({ error: 'Error', message: error.message })
